@@ -52,36 +52,49 @@
 
     <script>
     $(function(){
+        var sockjs;
         var sockjs_url = '/push_to_talk';
-        var sockjs = new SockJS(sockjs_url);
         var button = $('#push');
         var status = $('#status_bar');
         
-        sockjs.onopen = function()  {
+        function onopen()  {
             console.log('[*] open', sockjs.protocol)
-        };
-        sockjs.onmessage = function(e) {
+        }
+
+        function onmessage(e) {
             console.log('[.] message ' + e.data);
             if(e.data === 'on') {
                 status.addClass('on');
             } else {
                 status.removeClass('on');
             }
-        };
-        sockjs.onclose = function() {
+        }
+
+        function onclose() {
             console.log('[*] close');
-        };
+            setTimeout(connect, 500);
+        }
+
+        function connect() {
+            sockjs = new SockJS(sockjs_url)
+            sockjs.onopen = onopen;
+            sockjs.onmessage = onmessage;
+            sockjs.onclose = onclose;
+        }
 
         button.bind('touchstart mousedown', function() {
             console.log('[*] send on');
             sockjs.send('on');
             return false;
         });
+
         button.bind('touchend mouseup', function() {
             console.log('[*] send off');
             sockjs.send('off');
             return false;
         });
+        
+        connect();
     });
     </script>
 </body></html>
