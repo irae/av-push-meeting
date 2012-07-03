@@ -5,7 +5,7 @@ var express = require('express');
 var sockjs  = require('sockjs');
 var exec = require('child_process').exec;
 
-// 1. Echo sockjs server
+// 1. Sockjs server
 var sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"};
 
 var sockjs_server = sockjs.createServer(sockjs_opts);
