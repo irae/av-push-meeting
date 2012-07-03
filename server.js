@@ -20,7 +20,7 @@ var updateStatus = function () {
     connections.forEach(function (conn) {
         var onOff = talk ? 'on' : 'off';
         conn.write(onOff);
-        exec('osascript ' + (talk ? 'unmute.scpt' : 'mute.scpt'), function () {});
+        exec('osascript ' + (talk ? 'unmute.scpt' : 'mute.scpt'));
     });
 };
 
