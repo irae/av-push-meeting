@@ -3,6 +3,7 @@
 "use strict";
 var express = require('express');
 var sockjs  = require('sockjs');
+var exec = require('child_process').exec;
 
 // 1. Echo sockjs server
 var sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"};
@@ -17,7 +18,9 @@ var updateStatus = function () {
         talk = talk || conn.talk;
     });
     connections.forEach(function (conn) {
-        conn.write(talk ? 'on' : 'off');
+        var onOff = talk ? 'on' : 'off';
+        conn.write(onOff);
+        exec('osascript ' + (talk ? 'unmute.scpt' : 'mute.scpt'), function () {});
     });
 };
 
