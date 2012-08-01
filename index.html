@@ -11,6 +11,12 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
     <style type="text/css" media="screen">
+        .status {
+            font-size:300%;
+            position:fixed;
+            bottom:20px;
+            left:20px;
+        }
         .talk, .mute {
             width: 200px;
             margin: 20px auto;
@@ -19,26 +25,18 @@
             border-radius: 5px;
             padding: 5px;
         }
-        .status.on .mute, .talk {
+        .on .status .mute, .talk {
             display: none;
         }
-        .status.on .talk {
+        .on .status .talk {
             display: block;
         }
-        .talk {
-            background: green;
+        body {
+            background: black;
+            color: #fff;
         }
-        .mute {
-            background: red;
-        }
-        .red_button {
-            background: red;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
-            border-radius: 50%;
-            width: 200px;
-            height: 200px;
-            margin: 20px auto;
+        .on {
+            background:green;
         }
     </style>
 </head>
@@ -48,16 +46,14 @@
         <p class="mute">mute</p>
         <p class="talk">talk</p>
     </div>
-    
-    <div id="push" class="red_button"></div>
 
     <script>
     $(function(){
         var sockjs;
         var sockjs_url = '/push_to_talk';
-        var button = $('#push');
-        var status = $('#status_bar');
-        
+        var body = $('body');
+        var doc = $(document);
+
         function onopen()  {
             console.log('[*] open', sockjs.protocol)
         }
@@ -65,9 +61,9 @@
         function onmessage(e) {
             console.log('[.] message ' + e.data);
             if(e.data === 'on') {
-                status.addClass('on');
+                body.addClass('on');
             } else {
-                status.removeClass('on');
+                body.removeClass('on');
             }
         }
 
@@ -83,18 +79,18 @@
             sockjs.onclose = onclose;
         }
 
-        button.bind('touchstart mousedown', function() {
+        doc.bind('touchstart mousedown', function() {
             console.log('[*] send on');
             sockjs.send('on');
             return false;
         });
 
-        button.bind('touchend mouseup', function() {
+        doc.bind('touchend mouseup', function() {
             console.log('[*] send off');
             sockjs.send('off');
             return false;
         });
-        
+
         connect();
     });
     </script>

@@ -11,9 +11,10 @@ var sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.min.js"};
 var sockjs_server = sockjs.createServer(sockjs_opts);
 
 var connections = [];
+var talk = false;
 
 var updateStatus = function () {
-    var talk = false;
+    talk = false;
     connections.forEach(function (conn) {
         talk = talk || conn.talk;
     });
@@ -25,6 +26,8 @@ var updateStatus = function () {
 };
 
 sockjs_server.on('connection', function (conn) {
+    // initial state
+    conn.write(talk ? 'on' : 'off');
     conn.talk = false;
 
     conn.on('data', function (message) {
@@ -52,6 +55,12 @@ sockjs_server.installHandlers(app, {prefix: '/push_to_talk'});
 console.log(' [*] Listening on 0.0.0.0:9999');
 app.listen(9999, '0.0.0.0');
 
+// index
 app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
+});
+
+// *.png (touchicons)
+app.get('/:png.png', function (req, res) {
+    res.sendfile(__dirname + '/' + req.params.png + '.png');
 });
