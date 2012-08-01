@@ -85,10 +85,12 @@
             return false;
         });
 
-        doc.bind('touchend mouseup', function() {
-            console.log('[*] send off');
-            sockjs.send('off');
-            return false;
+        doc.bind('touchend mouseup', function(event) {
+            if(typeof event.originalEvent.touches === 'undefined' || event.originalEvent.touches.length === 0) {
+                console.log('[*] send off');
+                sockjs.send('off');
+                return false;
+            }
         });
 
         connect();
