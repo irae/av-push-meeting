@@ -21,8 +21,8 @@ var updateStatus = function () {
     connections.forEach(function (conn) {
         var onOff = talk ? 'on' : 'off';
         conn.write(onOff);
-        exec('osascript ' + (talk ? 'unmute.scpt' : 'mute.scpt'));
     });
+    exec('osascript ' + (talk ? 'unmute.scpt' : 'mute.scpt'));
 };
 
 sockjs_server.on('connection', function (conn) {
