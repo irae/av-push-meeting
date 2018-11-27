@@ -2,7 +2,7 @@
         "name": "sockjs-express",
         "version": "0.0.0-unreleasable",
         "dependencies": {
-                "express": "2.5.x",
+                "express": ">=3.11.0",
                 "sockjs": "0.3.x"
         }
 }
